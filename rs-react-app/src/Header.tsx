@@ -20,7 +20,6 @@ class Header extends Component<HeaderProps> {
         <div className="header-container">
           <div className="search">
             <h1 className="search__title">Pokemon Search</h1>
-
             <div className="search__container">
               <input
                 type="text"
@@ -37,7 +36,6 @@ class Header extends Component<HeaderProps> {
                 {loading ? 'Searching...' : 'Search'}
               </button>
             </div>
-
             <button onClick={onThrowError} className="button__throw-error">
               Test Error Boundary
             </button>
