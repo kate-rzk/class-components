@@ -1,33 +1,32 @@
 import { Component } from 'react';
+import type { Pokemon } from './App';
+import PokemonCard from './PokemonCard';
 
 interface MainProps {
   loading: boolean;
   searchTerm: string;
-  results: string[];
+  pokemons: Pokemon[];
 }
 
 class Main extends Component<MainProps> {
   render() {
-    const { loading, searchTerm, results } = this.props;
+    const { loading, pokemons } = this.props;
 
     if (loading) {
-      return <main className="main__loading">Loading...</main>;
+      return <main className="main__loading">Loading Pokemon...</main>;
     }
 
     return (
       <main className="main">
-        <h2 className="main__title">Results for `{searchTerm}`</h2>
-
-        {results.length === 0 ? (
-          <p className="text">No results found.</p>
+        <h2 className="main__title">Pokemon Collection</h2>
+        {pokemons.length === 0 ? (
+          <p className="text">No Pokemon found.</p>
         ) : (
-          <ul className="items-list">
-            {results.map((name) => (
-              <li key={name} className="item">
-                {name}
-              </li>
+          <div className="pokemon-grid">
+            {pokemons.map((pokemon) => (
+              <PokemonCard key={pokemon.id} pokemon={pokemon} />
             ))}
-          </ul>
+          </div>
         )}
       </main>
     );
