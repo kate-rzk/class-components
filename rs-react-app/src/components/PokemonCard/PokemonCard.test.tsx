@@ -29,7 +29,7 @@ describe('Main Component - Rendering Tests', () => {
       types: ['normal'],
       height: 21,
       weight: 4600,
-    }
+    },
   ];
 
   it('displays loading state correctly', () => {
@@ -49,31 +49,31 @@ describe('Main Component - Rendering Tests', () => {
     render(<Main loading={false} searchTerm="" pokemons={mockPokemonData} />);
 
     expect(screen.getByText('Pokemon Collection')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Pokemon Collection');
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      'Pokemon Collection'
+    );
   });
 
   it('renders correct number of pokemon cards', () => {
     render(<Main loading={false} searchTerm="" pokemons={mockPokemonData} />);
 
-    // Проверяем по заголовкам покемонов
     expect(screen.getByText('#1 bulbasaur')).toBeInTheDocument();
     expect(screen.getByText('#25 pikachu')).toBeInTheDocument();
     expect(screen.getByText('#143 snorlax')).toBeInTheDocument();
 
-    // Проверяем количество изображений покемонов
     const pokemonImages = screen.getAllByRole('img');
     expect(pokemonImages).toHaveLength(3);
   });
 
   it('renders correct number of items with different amounts of data', () => {
     const singlePokemon = [mockPokemonData[0]];
-    const { rerender } = render(<Main loading={false} searchTerm="" pokemons={singlePokemon} />);
+    const { rerender } = render(
+      <Main loading={false} searchTerm="" pokemons={singlePokemon} />
+    );
 
-    // Проверяем один покемон
     expect(screen.getAllByRole('img')).toHaveLength(1);
     expect(screen.getByText('#1 bulbasaur')).toBeInTheDocument();
 
-    // Перерендериваем с двумя покемонами
     const twoPokemon = mockPokemonData.slice(0, 2);
     rerender(<Main loading={false} searchTerm="" pokemons={twoPokemon} />);
 
@@ -81,7 +81,6 @@ describe('Main Component - Rendering Tests', () => {
     expect(screen.getByText('#1 bulbasaur')).toBeInTheDocument();
     expect(screen.getByText('#25 pikachu')).toBeInTheDocument();
 
-    // Перерендериваем с тремя покемонами
     rerender(<Main loading={false} searchTerm="" pokemons={mockPokemonData} />);
 
     expect(screen.getAllByRole('img')).toHaveLength(3);
@@ -91,25 +90,29 @@ describe('Main Component - Rendering Tests', () => {
   });
 
   it('renders pokemon cards with correct structure', () => {
-    const { container } = render(<Main loading={false} searchTerm="" pokemons={[mockPokemonData[0]]} />);
+    const { container } = render(
+      <Main loading={false} searchTerm="" pokemons={[mockPokemonData[0]]} />
+    );
 
-    // Проверяем структуру компонента
     expect(container.querySelector('.main')).toBeInTheDocument();
     expect(container.querySelector('.pokemon-grid')).toBeInTheDocument();
     expect(container.querySelector('.pokemon-card')).toBeInTheDocument();
   });
 
   it('does not render pokemon grid when loading', () => {
-    const { container } = render(<Main loading={true} searchTerm="" pokemons={mockPokemonData} />);
+    const { container } = render(
+      <Main loading={true} searchTerm="" pokemons={mockPokemonData} />
+    );
 
     expect(container.querySelector('.pokemon-grid')).not.toBeInTheDocument();
     expect(screen.queryByText('#1 bulbasaur')).not.toBeInTheDocument();
   });
 
   it('renders pokemon with all their details', () => {
-    render(<Main loading={false} searchTerm="" pokemons={[mockPokemonData[0]]} />);
+    render(
+      <Main loading={false} searchTerm="" pokemons={[mockPokemonData[0]]} />
+    );
 
-    // Проверяем детали первого покемона
     expect(screen.getByText('#1 bulbasaur')).toBeInTheDocument();
     expect(screen.getByText('grass')).toBeInTheDocument();
     expect(screen.getByText('poison')).toBeInTheDocument();
