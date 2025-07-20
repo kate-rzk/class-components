@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import type { Pokemon } from './App';
-import PokemonCard from './PokemonCard';
+import type { Pokemon } from '../../App';
+import PokemonCard from '../../PokemonCard';
 
 interface MainProps {
   loading: boolean;
