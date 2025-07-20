@@ -55,17 +55,14 @@ describe('Main Component - Rendering Tests', () => {
   ];
 
   it('renders correct number of PokemonCard components when data is provided', () => {
-    // Arrange: подготавливаем пропсы
     const props = {
       loading: false,
       searchTerm: '',
       pokemons: mockPokemons,
     };
 
-    // Act: рендерим компонент
     render(<Main {...props} />);
 
-    // Assert: проверяем что каждый покемон отрендерился
     mockPokemons.forEach((pokemon) => {
       expect(
         screen.getByTestId(`pokemon-card-${pokemon.id}`)
@@ -73,14 +70,12 @@ describe('Main Component - Rendering Tests', () => {
       expect(screen.getByText(pokemon.name)).toBeInTheDocument();
     });
 
-    // Проверяем общее количество через класс контейнера
     const pokemonGrid = document.querySelector('.pokemon-grid');
     expect(pokemonGrid?.children).toHaveLength(mockPokemons.length);
     expect(pokemonGrid?.children).toHaveLength(5);
   });
 
   it('renders correct number of items with different amounts of data', () => {
-    // Тестируем с разными количествами данных
     const testCases = [
       { pokemons: [], expectedCount: 0 },
       { pokemons: [mockPokemons[0]], expectedCount: 1 },
