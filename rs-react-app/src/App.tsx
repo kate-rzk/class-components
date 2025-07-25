@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 
@@ -43,22 +43,19 @@ interface AppState {
   pokemons: Pokemon[];
 }
 
-class App extends Component<Record<string, never>, AppState> {
-  constructor(props: Record<string, never>) {
-    super(props);
-    this.state = {
-      searchTerm: '',
-      loading: false,
-      pokemons: [],
-    };
-  }
+function App(): React.JSX.Element {
+  const [state, setState] = useState<AppState>({
+    searchTerm: '',
+    loading: false,
+    pokemons: [],
+  });
 
-  componentDidMount() {
-    this.fetchPokemons();
-  }
+  useEffect(() => {
+    fetchPokemons();
+  }, []);
 
-  fetchPokemons = async () => {
-    this.setState({ loading: true });
+  const fetchPokemons = useCallback(async () => {
+    setState((prevState) => ({ ...prevState, loading: true }));
     try {
       const response = await fetch(
         'https://pokeapi.co/api/v2/pokemon?limit=20'
@@ -83,42 +80,42 @@ class App extends Component<Record<string, never>, AppState> {
       );
 
       const pokemonList = await Promise.all(pokemonPromises);
-      this.setState({ pokemons: pokemonList });
+      setState((prevState) => ({ ...prevState, pokemons: pokemonList }));
     } catch (error) {
       console.error('Error fetching Pokemon data:', error);
     } finally {
-      this.setState({ loading: false });
+      setState((prevState) => ({ ...prevState, loading: false }));
     }
-  };
+  }, []);
 
-  handleSearchChange = (term: string) => {
-    this.setState({ searchTerm: term });
-  };
-
-  handleSearch = () => {
-    console.log('Searching for:', this.state.searchTerm);
-  };
-
-  handleThrowError = () => {
-    throw new Error('Test error boundary');
-  };
-
-  render() {
-    const { searchTerm, loading, pokemons } = this.state;
-
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header
-          searchTerm={searchTerm}
-          onSearchChange={this.handleSearchChange}
-          onSearch={this.handleSearch}
-          loading={loading}
-          onThrowError={this.handleThrowError}
-        />
-        <Main loading={loading} searchTerm={searchTerm} pokemons={pokemons} />
-      </div>
-    );
+  function handleSearchChange(term: string) {
+    setState((prevState) => ({ ...prevState, searchTerm: term }));
   }
+
+  function handleSearch() {
+    console.log('Searching for:', state.searchTerm);
+  }
+
+  function handleThrowError() {
+    throw new Error('Test error boundary');
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header
+        searchTerm={state.searchTerm}
+        onSearchChange={handleSearchChange}
+        onSearch={handleSearch}
+        loading={state.loading}
+        onThrowError={handleThrowError}
+      />
+      <Main
+        loading={state.loading}
+        searchTerm={state.searchTerm}
+        pokemons={state.pokemons}
+      />
+    </div>
+  );
 }
 
 export default App;
