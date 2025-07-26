@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
+import type { ChangeEvent } from 'react';
 import Header from './components/Header/Header';
 import Main from './components/Main/Main';
+import useInput from './hooks/useInput';
+import useSearchQuery from './hooks/useSearchQuery';
 
 export interface Pokemon {
   id: number;
@@ -38,21 +41,43 @@ interface PokemonType {
 }
 
 interface AppState {
-  searchTerm: string;
   loading: boolean;
   pokemons: Pokemon[];
 }
 
 function App(): React.JSX.Element {
   const [state, setState] = useState<AppState>({
-    searchTerm: '',
     loading: false,
     pokemons: [],
   });
 
+  const input = useInput();
+
+  const { searchQuery, setSearchQuery, isSearching, setIsSearching } =
+    useSearchQuery();
+
+  useEffect(() => {
+    if (searchQuery && isSearching) {
+      input.onChange({
+        target: { value: searchQuery },
+      } as ChangeEvent<HTMLInputElement>);
+    }
+  }, []);
+
   useEffect(() => {
     fetchPokemons();
   }, []);
+
+  function handleSearch() {
+    const query = input.value.trim();
+    if (query) {
+      setSearchQuery(query);
+      setIsSearching(true);
+    } else {
+      setSearchQuery('');
+      setIsSearching(false);
+    }
+  }
 
   const fetchPokemons = useCallback(async () => {
     setState((prevState) => ({ ...prevState, loading: true }));
@@ -88,14 +113,6 @@ function App(): React.JSX.Element {
     }
   }, []);
 
-  function handleSearchChange(term: string) {
-    setState((prevState) => ({ ...prevState, searchTerm: term }));
-  }
-
-  function handleSearch() {
-    console.log('Searching for:', state.searchTerm);
-  }
-
   function handleThrowError() {
     throw new Error('Test error boundary');
   }
@@ -103,16 +120,16 @@ function App(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header
-        searchTerm={state.searchTerm}
-        onSearchChange={handleSearchChange}
-        onSearch={handleSearch}
+        input={input}
         loading={state.loading}
         onThrowError={handleThrowError}
+        onSearch={handleSearch}
       />
       <Main
         loading={state.loading}
-        searchTerm={state.searchTerm}
         pokemons={state.pokemons}
+        isSearching={isSearching}
+        searchQuery={searchQuery}
       />
     </div>
   );

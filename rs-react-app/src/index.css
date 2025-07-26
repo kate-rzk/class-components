@@ -43,10 +43,6 @@ button {
 button:hover {
   border-color: #646cff;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -58,6 +54,9 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+button:active {
+  border-color: #eaeaea;
 }
 input {
   width: 80%;

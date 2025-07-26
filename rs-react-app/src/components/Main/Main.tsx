@@ -1,15 +1,30 @@
 import type { Pokemon } from '../../App';
-import PokemonCard from '../../PokemonCard';
+import PokemonCard from '../Card/PokemonCard';
+import Search from '../Header/Search';
 
 interface MainProps {
   loading: boolean;
-  searchTerm?: string;
   pokemons: Pokemon[];
+  isSearching: boolean;
+  searchQuery: string;
 }
 
-function Main({ loading, pokemons }: MainProps): React.JSX.Element {
+function Main({
+  loading,
+  pokemons,
+  isSearching,
+  searchQuery,
+}: MainProps): React.JSX.Element {
   if (loading) {
     return <main className="main__loading">Loading Pokemon...</main>;
+  }
+
+  if (isSearching && searchQuery.trim()) {
+    return (
+      <main>
+        <Search pokemons={pokemons} searchQuery={searchQuery} />
+      </main>
+    );
   }
 
   return (

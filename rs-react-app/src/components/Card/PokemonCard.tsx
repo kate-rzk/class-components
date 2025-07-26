@@ -1,4 +1,4 @@
-import type { Pokemon } from './App';
+import type { Pokemon } from '../../App';
 
 interface PokemonCardProps {
   pokemon: Pokemon;

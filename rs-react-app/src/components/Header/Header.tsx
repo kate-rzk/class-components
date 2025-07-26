@@ -1,19 +1,17 @@
-import './header.css';
+import type { UseInputReturn } from '../../hooks/useInput';
 
 interface HeaderProps {
-  searchTerm: string;
-  onSearchChange: (term: string) => void;
-  onSearch: () => void;
+  input: UseInputReturn;
   loading: boolean;
   onThrowError: () => void;
+  onSearch: () => void;
 }
 
 function Header({
-  searchTerm,
-  onSearchChange,
-  onSearch,
+  input,
   loading,
   onThrowError,
+  onSearch,
 }: HeaderProps): React.JSX.Element {
   return (
     <header className="header">
@@ -24,8 +22,7 @@ function Header({
             <input
               type="text"
               placeholder="Search Pokemon..."
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
+              {...input}
               className="search__input"
             />
             <button
