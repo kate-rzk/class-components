@@ -5,6 +5,7 @@ interface PaginationProps {
   currentPage: number;
   showNextPage: () => void;
   showPrevPage: () => void;
+  totalPokemonSearch?: number;
 }
 
 function Pagination({

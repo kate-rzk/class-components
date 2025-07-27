@@ -13,6 +13,9 @@ interface MainProps {
   showNextPage: () => void;
   showPrevPage: () => void;
   currentPage: number;
+  searchResults: Pokemon[];
+  searchLoading: boolean;
+  allPokemonNamesLoaded: boolean;
 }
 function Main({
   loading,
@@ -25,20 +28,52 @@ function Main({
   showPrevPage,
   paginate,
   currentPage,
+  searchResults,
+  searchLoading,
+  allPokemonNamesLoaded,
 }: MainProps): React.JSX.Element {
-  if (loading) {
-    return <main className="mainloading">Loading Pokemon...</main>;
+  if (loading && !isSearching) {
+    return <main className="main__loading">Loading Pokemon...</main>;
   }
+
+  if (!allPokemonNamesLoaded && !isSearching) {
+    return <main className="main__loading">Loading Pokemon database...</main>;
+  }
+
   if (isSearching && searchQuery.trim()) {
     return (
       <main>
-        <Search pokemons={pokemons} searchQuery={searchQuery} />
+        <div className="search-header">
+          <h2 className="main__title">
+            Search Results for `{searchQuery}`
+            {!searchLoading && searchResults.length > 0 && (
+              <span className="search-count">
+                {' '}
+                ({searchResults.length} found)
+              </span>
+            )}
+          </h2>
+        </div>
+        <Search
+          pokemons={searchResults}
+          searchQuery={searchQuery}
+          loading={searchLoading}
+        />
+        <Pagination
+          pokemonsPerPage={pokemonsPerPage}
+          totalPokemonNumbers={totalPokemonNumbers}
+          paginate={paginate}
+          currentPage={currentPage}
+          showNextPage={showNextPage}
+          showPrevPage={showPrevPage}
+        />
       </main>
     );
   }
+
   return (
     <main className="main">
-      <h2 className="maintitle">Pokemon Collection</h2>
+      <h2 className="main__title">Pokemon Collection</h2>
       {pokemons.length === 0 ? (
         <p className="text">No Pokemon found.</p>
       ) : (

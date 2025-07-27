@@ -227,10 +227,18 @@ input:focus {
     grid-template-columns: 1fr;
   }
 }
-.search__container {
+.search-input-wrapper {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  gap: 40px;                
+}
+
+.search__button {
+  background-color: #646cff;
+  color: hwb(220 92% 6%);
+}
+
+.search__button:hover {
+  color: hwb(240 5% 95%);
 }
 
 /* Стили для пагинации */
@@ -319,11 +327,11 @@ input:focus {
 }
 
 .page-link.prev::before {
-  content: "← ";
+  content: '← ';
   margin-right: 4px;
 }
 
 .page-link.next::after {
-  content: " →";
+  content: ' →';
   margin-left: 4px;
 }
