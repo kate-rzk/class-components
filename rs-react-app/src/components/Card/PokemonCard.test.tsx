@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 import PokemonCard from './PokemonCard';
-import type { Pokemon } from './App';
+import type { Pokemon } from '../../App';
 
 describe('PokemonCard Component - Rendering Tests', () => {
   const mockPokemon: Pokemon = {

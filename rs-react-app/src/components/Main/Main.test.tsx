@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/vitest';
 import Main from './Main';
 import type { Pokemon } from '../../App';
 
-vi.mock('../../PokemonCard', () => ({
+vi.mock('../Card/PokemonCard', () => ({
   default: ({ pokemon }: { pokemon: Pokemon }) => (
     <div data-testid={`pokemon-card-${pokemon.id}`}>{pokemon.name}</div>
   ),
