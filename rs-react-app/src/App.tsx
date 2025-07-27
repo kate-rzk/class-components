@@ -43,13 +43,20 @@ interface PokemonType {
 interface AppState {
   loading: boolean;
   pokemons: Pokemon[];
+  currentPage: number;
+  offset: number;
 }
 
 function App(): React.JSX.Element {
   const [state, setState] = useState<AppState>({
     loading: false,
     pokemons: [],
+    currentPage: 1,
+    offset: 0,
   });
+
+  const POKEMONS_PER_PAGE: number = 20;
+  const TOTAL_POKEMON_NUMBERS: number = 1302;
 
   const input = useInput();
 
@@ -66,7 +73,7 @@ function App(): React.JSX.Element {
 
   useEffect(() => {
     fetchPokemons();
-  }, []);
+  }, [state.currentPage]);
 
   function handleSearch() {
     const query = input.value.trim();
@@ -81,10 +88,12 @@ function App(): React.JSX.Element {
 
   const fetchPokemons = useCallback(async () => {
     setState((prevState) => ({ ...prevState, loading: true }));
+
+    const offset = (state.currentPage - 1) * POKEMONS_PER_PAGE;
+    const URL = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${POKEMONS_PER_PAGE}`;
+
     try {
-      const response = await fetch(
-        'https://pokeapi.co/api/v2/pokemon?limit=20'
-      );
+      const response = await fetch(URL);
       const data: PokemonListResponse = await response.json();
 
       const pokemonPromises = data.results.map(
@@ -111,10 +120,28 @@ function App(): React.JSX.Element {
     } finally {
       setState((prevState) => ({ ...prevState, loading: false }));
     }
-  }, []);
+  }, [state.currentPage]);
 
   function handleThrowError() {
     throw new Error('Test error boundary');
+  }
+
+  function paginate(pageNumber: number): void {
+    setState((prevState) => ({ ...prevState, currentPage: pageNumber }));
+  }
+
+  function showNextPage() {
+    setState((prevState) => ({
+      ...prevState,
+      currentPage: prevState.currentPage + 1,
+    }));
+  }
+
+  function showPrevPage() {
+    setState((prevState) => ({
+      ...prevState,
+      currentPage: prevState.currentPage - 1,
+    }));
   }
 
   return (
@@ -130,6 +157,12 @@ function App(): React.JSX.Element {
         pokemons={state.pokemons}
         isSearching={isSearching}
         searchQuery={searchQuery}
+        pokemonsPerPage={POKEMONS_PER_PAGE}
+        totalPokemonNumbers={TOTAL_POKEMON_NUMBERS}
+        paginate={paginate}
+        showNextPage={showNextPage}
+        showPrevPage={showPrevPage}
+        currentPage={state.currentPage}
       />
     </div>
   );

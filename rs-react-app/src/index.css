@@ -95,7 +95,7 @@ input:focus {
 }
 .pokemon-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 15px;
   padding: 20px 0;
 }
@@ -231,4 +231,99 @@ input:focus {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+}
+
+/* Стили для пагинации */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.page-item {
+  display: inline-block;
+}
+
+.page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 8px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #374151;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.page-link:hover {
+  background-color: #f8fafc;
+  border-color: #3b82f6;
+  color: #3b82f6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.page-link:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+/* Активная страница */
+.page-item.active .page-link {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+  cursor: default;
+}
+
+.page-item.active .page-link:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  transform: none;
+}
+
+/* Отключенные кнопки (первая/последняя страница) */
+.page-item.disabled .page-link {
+  background-color: #f9fafb;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.page-item.disabled .page-link:hover {
+  background-color: #f9fafb;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Кнопки "Назад" и "Далее" */
+.page-link.prev,
+.page-link.next {
+  min-width: 80px;
+  font-weight: 600;
+}
+
+.page-link.prev::before {
+  content: "← ";
+  margin-right: 4px;
+}
+
+.page-link.next::after {
+  content: " →";
+  margin-left: 4px;
 }
